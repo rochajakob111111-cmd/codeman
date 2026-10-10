@@ -1,22 +1,35 @@
 {
-  "_status": "DRAFT, not yet checked by Melty's validate_recipe / one_click_check (melty.gg was unreachable from the build machine). Field names follow Melty's publish guide; fix whatever validate_recipe reports before saving as melty.json.",
+  "schemaVersion": 1,
+  "mode": "installed",
   "games": [
-    {"slug": "minecraft-java", "role": "primary", "loader": "fabric", "version": "1.21.1"},
-    {"slug": "blade-and-sorcery", "role": "companion"}
+    {"role": "primary", "slug": "minecraft-java"},
+    {"role": "companion", "slug": "blade-and-sorcery"}
   ],
   "components": [
-    {"fileName": "craftblade-minecraft-*.zip", "destination": "{release}", "note": "portable Prism Launcher with the CraftBlade instance (mmc-pack.json names Fabric Loader 0.16.10)"},
-    {"fileName": "craftblade-bas-*.zip", "destination": "{game:blade-and-sorcery}/BladeAndSorcery_Data/StreamingAssets/Mods"}
+    {"id": "main", "kind": "main", "label": "CraftBlade's Minecraft", "fileName": "CraftBlade-Minecraft-0.1.0.zip", "required": true},
+    {"id": "bas", "kind": "extra", "label": "CraftBlade for Blade & Sorcery", "fileName": "CraftBlade-BAS-0.1.0.zip", "required": true}
   ],
-  "setup": {"run": "{release}/PrismLauncher/prismlauncher.exe", "args": ["--launch", "CraftBlade"], "why": "first start: Prism installs Minecraft 1.21.1 + Fabric and the player signs in to their Microsoft account"},
-  "launch": {"run": "{release}/PrismLauncher/prismlauncher.exe", "args": ["--launch", "CraftBlade"]},
-  "together": {"run": "steam://rungameid/629730", "why": "the VR player's Blade & Sorcery runs beside their Minecraft and connects to it on 127.0.0.1:25599"},
+  "requirements": [],
+  "mappings": [
+    {"component": "main", "from": "", "to": "{localappdata}/CraftBlade"},
+    {"component": "bas", "from": "CraftBlade/", "to": "{game:blade-and-sorcery}/BladeAndSorcery_Data/StreamingAssets/Mods/CraftBlade"}
+  ],
+  "setup": {
+    "label": "Minecraft",
+    "launch": {"kind": "exe", "path": "{localappdata}/CraftBlade/Prism/prismlauncher.exe", "args": ["--launch", "CraftBlade"]},
+    "done": {"file": "{localappdata}/CraftBlade/Prism/instances/CraftBlade/.minecraft/logs/latest.log", "contains": "Backend library:"}
+  },
+  "launch": {"kind": "exe", "path": "{localappdata}/CraftBlade/Prism/prismlauncher.exe", "args": ["--launch", "CraftBlade"]},
+  "together": [
+    {"launch": {"kind": "exe", "path": "{game:blade-and-sorcery}/BladeAndSorcery.exe", "cwd": "{game:blade-and-sorcery}"}, "waitSeconds": 20}
+  ],
+  "runtimeData": ["{localappdata}/CraftBlade"],
   "multiplayer": {
     "maxPlayers": 8,
     "connect": {
-      "hostEnv": {"CRAFTBLADE_HOST": "1"},
-      "address": {"log": "{minecraft-instance}/config/craftblade/melty.log", "after": "Melty join address: "},
-      "joinFile": {"path": "{minecraft-instance}/config/craftblade/melty.properties", "key": "join"}
+      "hostEnv": {"CRAFTBLADE_LAN_PORT": "{port}"},
+      "address": {"log": "{localappdata}/CraftBlade/Prism/instances/CraftBlade/.minecraft/logs/latest.log", "after": "Domain assigned: "},
+      "joinFile": {"path": "{localappdata}/CraftBlade/Prism/instances/CraftBlade/.minecraft/config/craftblade/melty.properties", "key": "join"}
     }
   }
 }

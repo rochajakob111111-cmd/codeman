@@ -11,7 +11,6 @@ import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
 import net.minecraft.client.gui.screen.world.CreateWorldScreen;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
-import net.minecraft.client.util.NetworkUtils;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.world.GameMode;
 import net.minecraft.world.level.storage.LevelSummary;
@@ -31,8 +30,10 @@ import java.util.regex.Pattern;
 /**
  * Melty's play-together contract (config/craftblade/melty.properties, config/craftblade/melty.log):
  *  - join=<address> set: connect straight to the host and log "Melty joined: <address>".
- *  - join empty: load the newest world (or open Create World); with CRAFTBLADE_HOST=1 also open it to others
- *    (e4mc gives it a public address) and log "Melty join address: <address>".
+ *  - join empty: load the newest world (or open Create World); with CRAFTBLADE_LAN_PORT set (Melty sets it on
+ *    every Play) also open it to others on that port. e4mc then gives it a public address and logs
+ *    "Domain assigned: <address>" to latest.log, which is where Melty reads it. Without e4mc we log the LAN
+ *    address to melty.log instead.
  */
 public final class MeltyLink {
     private static final Pattern E4MC = Pattern.compile("([a-z0-9-]+(?:\\.[a-z0-9-]+)*\\.e4mc\\.link)");
@@ -67,7 +68,7 @@ public final class MeltyLink {
         ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
             if (!opened || announced) return;
             Matcher m = E4MC.matcher(message.getString());
-            if (m.find()) announce(m.group(1));
+            if (m.find()) announce(m.group(1)); // e4mc also logs "Domain assigned: ..." itself
         });
     }
 
@@ -76,8 +77,16 @@ public final class MeltyLink {
         return Files.exists(DIR.resolve("melty.properties"));
     }
 
+    private static int hostPort() {
+        try {
+            return Integer.parseInt(System.getenv().getOrDefault("CRAFTBLADE_LAN_PORT", "").trim());
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
     private static boolean hosting() {
-        return "1".equals(System.getenv("CRAFTBLADE_HOST"));
+        return join.isEmpty() && hostPort() > 0;
     }
 
     private static void begin(MinecraftClient mc, net.minecraft.client.gui.screen.Screen title) {
@@ -107,7 +116,7 @@ public final class MeltyLink {
         }
         IntegratedServer server = mc.getServer();
         if (server == null || mc.player == null || server.isRemote()) return;
-        lanPort = NetworkUtils.findLocalPort();
+        lanPort = hostPort();
         GameMode mode = mc.interactionManager != null ? mc.interactionManager.getCurrentGameMode() : GameMode.SURVIVAL;
         if (server.openToLan(mode, false, lanPort)) {
             opened = true;

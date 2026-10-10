@@ -2,9 +2,9 @@
 
     python tools/package.py --bas "C:/Program Files (x86)/Steam/steamapps/common/Blade & Sorcery"
 
-Produces dist/craftblade-minecraft-<ver>.zip (portable Prism Launcher + the CraftBlade instance: Minecraft
+Produces dist/CraftBlade-Minecraft-<ver>.zip (unpacks to {localappdata}/CraftBlade: portable Prism Launcher + the CraftBlade instance: Minecraft
 1.21.1, Fabric Loader named in mmc-pack.json so Prism installs it, our mod, Fabric API, e4mc) and
-dist/craftblade-bas-<ver>.zip (the B&S script mod folder). Prints byte size and SHA-256 of each for upload.
+dist/CraftBlade-BAS-<ver>.zip (the B&S script mod folder). Prints byte size and SHA-256 of each for upload.
 Downloads come only from official sources (Prism's GitHub releases, Modrinth). No game files are included:
 the B&S build only *references* the game's DLLs."""
 import argparse
@@ -81,13 +81,13 @@ def main():
     e4mc_name, e4mc = modrinth_jar("e4mc")
     prism = zipfile.ZipFile(io.BytesIO(get(PRISM_ZIP)))
 
-    mc_zip = dist / f"craftblade-minecraft-{VERSION}.zip"
-    inst = "PrismLauncher/instances/CraftBlade"
+    mc_zip = dist / f"CraftBlade-Minecraft-{VERSION}.zip"
+    inst = "Prism/instances/CraftBlade"
     with zipfile.ZipFile(mc_zip, "w", zipfile.ZIP_DEFLATED) as z:
         for info in prism.infolist():
             if not info.is_dir():
-                z.writestr("PrismLauncher/" + info.filename, prism.read(info))
-        z.writestr("PrismLauncher/portable.txt", "")
+                z.writestr("Prism/" + info.filename, prism.read(info))
+        z.writestr("Prism/portable.txt", "")
         z.writestr(f"{inst}/instance.cfg", "InstanceType=OneSix\nname=CraftBlade\niconKey=default\n")
         z.writestr(f"{inst}/mmc-pack.json", json.dumps({"formatVersion": 1, "components": [
             {"uid": "net.minecraft", "version": MC, "important": True},
@@ -98,9 +98,9 @@ def main():
         z.writestr(f"{inst}/.minecraft/mods/{fapi_name}", fapi)
         z.writestr(f"{inst}/.minecraft/mods/{e4mc_name}", e4mc)
         z.writestr(f"{inst}/.minecraft/config/craftblade/melty.properties", "join=\n")
-        z.write(ROOT / "LICENSES-THIRD-PARTY.md", "PrismLauncher/CRAFTBLADE-THIRD-PARTY.md")
+        z.write(ROOT / "LICENSES-THIRD-PARTY.md", "Prism/CRAFTBLADE-THIRD-PARTY.md")
 
-    bas_zip = dist / f"craftblade-bas-{VERSION}.zip"
+    bas_zip = dist / f"CraftBlade-BAS-{VERSION}.zip"
     with zipfile.ZipFile(bas_zip, "w", zipfile.ZIP_DEFLATED) as z:
         z.write(ROOT / "bas/mod/manifest.json", "CraftBlade/manifest.json")
         z.write(ROOT / "bas/mod/craftblade.json", "CraftBlade/craftblade.json")

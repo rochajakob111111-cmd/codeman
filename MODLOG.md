@@ -35,7 +35,7 @@ Minecraft's own server/LAN/e4mc multiplayer and accounts work unchanged) and tal
 ## Not verified (every `verified: false` row in the sheets)
 - All game API calls listed in sheets/hooks.json (Yarn 1.21.1 names, ThunderRoad 1.0 members).
 - Pinned versions: Loom 1.9-SNAPSHOT, Yarn 1.21.1+build.3, Fabric API 0.107.0+1.21.1, Loader 0.16.10,
-  Prism 9.4, B&S manifest GameVersion "1.0".
+  Prism 9.4, B&S manifest GameVersion "1.3.1" (Melty sees players on B&S 1.3.1).
 - Damage scales, creature ids HumanMale/HumanFemale, URP shader names and keywords, collider layer.
 - Melty recipe fields (docs/recipe-draft.json), e4mc's chat line format.
 
@@ -45,3 +45,12 @@ Minecraft's own server/LAN/e4mc multiplayer and accounts work unchanged) and tal
    Player.log for "[CraftBlade] Connected to Minecraft".
 3. Slice order: one stone cube visible -> standing on blocks -> textures -> zombie proxy -> hit kills it in MC.
 4. Two copies of Minecraft (host + joiner) for the multiplayer test.
+
+## Melty (connected)
+- Draft created: CraftBlade, modId adc4e57f-52f4-4ebf-a84e-a0daf5e6098a, linked to this repo.
+  Studio: https://melty.gg/studio/adc4e57f-52f4-4ebf-a84e-a0daf5e6098a
+- docs/recipe-draft.json passes validate_recipe; one_click: yes (Melty runs Prism's first start and signs it
+  in with the player's Minecraft account; B&S starts alongside). Layout copied from SkyCraft's live recipe.
+- setup_multiplayer accepted the block: CRAFTBLADE_LAN_PORT={port} on every Play, address from latest.log
+  after "Domain assigned: " (e4mc), join via melty.properties join=. Not tested: needs two Minecraft copies.
+- Closest existing: "Blocks & Sorcery" (B&S primary, MC blocks in B&S arenas, single player).
