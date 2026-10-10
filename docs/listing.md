@@ -16,4 +16,4 @@ Needs Minecraft: Java Edition, Blade & Sorcery (PC VR) and a VR headset.
 **Games:** Minecraft: Java Edition (primary), Blade & Sorcery (companion)
 **Players:** 1-8, online (host + join link)
 **Credits:** see LICENSES-THIRD-PARTY.md (Prism Launcher, Fabric API, e4mc, Fabric Loader)
-**License / remix:** not chosen yet (the creator decides)
+**License / remix:** MIT, remixing allowed

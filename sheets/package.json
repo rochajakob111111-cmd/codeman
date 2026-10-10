@@ -15,7 +15,7 @@
       "id": "craftblade-fabric",
       "what": "CraftBlade Fabric mod jar (this repo, fabric/)",
       "source": "gradle build in fabric/",
-      "license": "project license (TBD by owner)",
+      "license": "MIT",
       "credit": "rochajakob111111-cmd",
       "destination": "{localappdata}/CraftBlade/Prism/instances/CraftBlade/.minecraft/mods/craftblade-*.jar",
       "verified": false
@@ -51,7 +51,7 @@
       "id": "craftblade-bas",
       "what": "CraftBlade B&S script mod: manifest.json, CraftBlade.dll, craftblade.json (this repo, bas/)",
       "source": "dotnet build bas/CraftBlade.csproj against the player's own B&S",
-      "license": "project license (TBD by owner)",
+      "license": "MIT",
       "credit": "rochajakob111111-cmd",
       "destination": "{game:blade-and-sorcery}/BladeAndSorcery_Data/StreamingAssets/Mods/CraftBlade",
       "verified": false
