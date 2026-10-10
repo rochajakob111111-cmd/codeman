@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "craftblade",
+  "version": "${version}",
+  "name": "CraftBlade",
+  "description": "Blade & Sorcery players step into your Minecraft world: the VR player's B&S body drives their Minecraft body, and Minecraft's blocks, mobs and players appear in their Blade & Sorcery.",
+  "authors": ["rochajakob111111-cmd"],
+  "license": "TBD",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["gg.craftblade.CraftBlade"],
+    "client": ["gg.craftblade.client.CraftBladeClient"]
+  },
+  "mixins": ["craftblade.mixins.json"],
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "_sheet": "creatures",
+  "_about": "B&S CreatureData ids the mod spawns. They are looked up in the player's own B&S catalog at runtime (Catalog.GetData<CreatureData>); nothing is shipped.",
+  "columns": ["id", "source", "verified"],
+  "rows": [
+    {"id": "HumanMale", "source": "base game catalog", "verified": false},
+    {"id": "HumanFemale", "source": "base game catalog", "verified": false}
+  ]
+}

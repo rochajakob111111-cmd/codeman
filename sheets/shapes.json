@@ -1,0 +1,11 @@
+{
+  "_sheet": "shapes",
+  "columns": ["id", "name", "mesh", "collider", "verified"],
+  "rows": [
+    {"id": 0, "name": "air", "mesh": "none", "collider": "none", "verified": true},
+    {"id": 1, "name": "cube", "mesh": "6 faces, faces hidden next to an opaque cube are culled", "collider": "merged box per run of solid cells along x", "verified": false},
+    {"id": 2, "name": "cross", "mesh": "2 crossed double-sided quads (flowers, grass, saplings)", "collider": "none", "verified": false},
+    {"id": 3, "name": "liquid", "mesh": "top face at 0.875, sides culled against same liquid, translucent", "collider": "none", "verified": false},
+    {"id": 4, "name": "box", "mesh": "6 faces of the min/max box (slabs, carpets, fences use their outline box)", "collider": "box from min/max", "verified": false}
+  ]
+}

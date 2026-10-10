@@ -1,0 +1,12 @@
+{
+  "_sheet": "damage",
+  "_about": "B&S DamageType -> Minecraft damage. mcDamage = min(maxMc, basDamage * scale); knockback = speed * knockbackPerMs. Server applies this, so every client agrees.",
+  "columns": ["id", "basType", "scale", "minSpeed", "maxMc", "knockbackPerMs", "mcSource", "verified"],
+  "rows": [
+    {"id": 0, "basType": "Unknown", "scale": 0.25, "minSpeed": 2.0, "maxMc": 12.0, "knockbackPerMs": 0.05, "mcSource": "playerAttack", "verified": false},
+    {"id": 1, "basType": "Pierce", "scale": 0.30, "minSpeed": 1.5, "maxMc": 20.0, "knockbackPerMs": 0.02, "mcSource": "playerAttack", "verified": false},
+    {"id": 2, "basType": "Slash", "scale": 0.30, "minSpeed": 2.5, "maxMc": 16.0, "knockbackPerMs": 0.04, "mcSource": "playerAttack", "verified": false},
+    {"id": 3, "basType": "Blunt", "scale": 0.25, "minSpeed": 2.5, "maxMc": 14.0, "knockbackPerMs": 0.10, "mcSource": "playerAttack", "verified": false},
+    {"id": 4, "basType": "Energy", "scale": 0.20, "minSpeed": 0.0, "maxMc": 10.0, "knockbackPerMs": 0.03, "mcSource": "playerAttack", "verified": false}
+  ]
+}

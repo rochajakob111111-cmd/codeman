@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "gg.craftblade.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "WorldMixin",
+    "BipedModelMixin",
+    "ClientPlayerMixin",
+    "NetworkHandlerMixin"
+  ],
+  "injectors": { "defaultRequire": 1 }
+}

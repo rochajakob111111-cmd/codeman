@@ -1,0 +1,231 @@
+{
+  "_sheet": "hooks",
+  "_about": "Every place the mashup touches either game. One row = one hook; 'file' is the source that implements it. 'api' is the exact game/loader API the code calls; verified=true only after it was seen working in the running game.",
+  "columns": [
+    "id",
+    "game",
+    "side",
+    "api",
+    "purpose",
+    "file",
+    "verified"
+  ],
+  "rows": [
+    {
+      "id": "mc.init",
+      "game": "minecraft-java",
+      "side": "common",
+      "api": "Fabric ModInitializer + PayloadTypeRegistry.playC2S/playS2C",
+      "purpose": "Register Hit and Arms payloads",
+      "file": "fabric/src/main/java/gg/craftblade/CraftBlade.java",
+      "verified": false
+    },
+    {
+      "id": "mc.hit",
+      "game": "minecraft-java",
+      "side": "server",
+      "api": "ServerPlayNetworking.registerGlobalReceiver + LivingEntity.damage(DamageSources.playerAttack) + takeKnockback",
+      "purpose": "Apply a B&S weapon hit with damage.json scaling and reach checks",
+      "file": "fabric/src/main/java/gg/craftblade/HitHandler.java",
+      "verified": false
+    },
+    {
+      "id": "mc.arms.relay",
+      "game": "minecraft-java",
+      "side": "server",
+      "api": "ServerPlayNetworking receiver + PlayerLookup.tracking",
+      "purpose": "Relay the VR player's hand offsets to everyone who can see them",
+      "file": "fabric/src/main/java/gg/craftblade/CraftBlade.java",
+      "verified": false
+    },
+    {
+      "id": "mc.client.init",
+      "game": "minecraft-java",
+      "side": "client",
+      "api": "Fabric ClientModInitializer + ClientTickEvents.END_CLIENT_TICK",
+      "purpose": "Start the bridge, pump it every tick",
+      "file": "fabric/src/main/java/gg/craftblade/client/CraftBladeClient.java",
+      "verified": false
+    },
+    {
+      "id": "mc.bridge",
+      "game": "minecraft-java",
+      "side": "client",
+      "api": "java.net.ServerSocket on 127.0.0.1:bridgePort",
+      "purpose": "Talk to the B&S mod on the same PC",
+      "file": "fabric/src/main/java/gg/craftblade/client/Bridge.java",
+      "verified": false
+    },
+    {
+      "id": "mc.states",
+      "game": "minecraft-java",
+      "side": "client",
+      "api": "Block.STATE_IDS + BlockRenderManager.getModel(state).getQuads(state, dir, random) + Sprite.getContents().getId()",
+      "purpose": "Describe each block state (faces, shape, tint, collision) from the player's own resources",
+      "file": "fabric/src/main/java/gg/craftblade/client/StateTable.java",
+      "verified": false
+    },
+    {
+      "id": "mc.textures",
+      "game": "minecraft-java",
+      "side": "client",
+      "api": "MinecraftClient.getResourceManager().getResource(namespace:textures/<path>.png)",
+      "purpose": "Send texture PNGs B&S asks for, from the player's own game and resource packs",
+      "file": "fabric/src/main/java/gg/craftblade/client/WorldStreamer.java",
+      "verified": false
+    },
+    {
+      "id": "mc.sections",
+      "game": "minecraft-java",
+      "side": "client",
+      "api": "ClientWorld.getChunk(cx,cz).getSection(i).getBlockState(x,y,z) + BiomeColors",
+      "purpose": "Stream 16^3 sections around the VR player, nearest first",
+      "file": "fabric/src/main/java/gg/craftblade/client/WorldStreamer.java",
+      "verified": false
+    },
+    {
+      "id": "mc.blockchange",
+      "game": "minecraft-java",
+      "side": "client",
+      "api": "Mixin World.onBlockChanged(BlockPos, BlockState, BlockState) on ClientWorld",
+      "purpose": "Send block edits as they happen",
+      "file": "fabric/src/main/java/gg/craftblade/mixin/WorldMixin.java",
+      "verified": false
+    },
+    {
+      "id": "mc.entities",
+      "game": "minecraft-java",
+      "side": "client",
+      "api": "ClientWorld.getEntitiesByClass(LivingEntity, box) + hurtTime + handSwinging",
+      "purpose": "Stream nearby mobs and players to B&S",
+      "file": "fabric/src/main/java/gg/craftblade/client/EntityStreamer.java",
+      "verified": false
+    },
+    {
+      "id": "mc.pose",
+      "game": "minecraft-java",
+      "side": "client",
+      "api": "ClientPlayerEntity.setPosition/setYaw/setPitch/setOnGround + input suppressed",
+      "purpose": "The VR player's B&S body drives their Minecraft body",
+      "file": "fabric/src/main/java/gg/craftblade/client/PoseDriver.java",
+      "verified": false
+    },
+    {
+      "id": "mc.selfstate",
+      "game": "minecraft-java",
+      "side": "client",
+      "api": "ClientPlayerEntity.getHealth/hurtTime/isDead + requestRespawn",
+      "purpose": "Minecraft owns the VR player's health; auto-respawn while bridged",
+      "file": "fabric/src/main/java/gg/craftblade/client/PoseDriver.java",
+      "verified": false
+    },
+    {
+      "id": "mc.teleport",
+      "game": "minecraft-java",
+      "side": "client",
+      "api": "Mixin ClientPlayNetworkHandler.onPlayerPositionLook TAIL",
+      "purpose": "Count server teleports so B&S follows them",
+      "file": "fabric/src/main/java/gg/craftblade/mixin/NetworkHandlerMixin.java",
+      "verified": false
+    },
+    {
+      "id": "mc.movepacket",
+      "game": "minecraft-java",
+      "side": "client",
+      "api": "Mixin ClientPlayerEntity.sendMovementPackets HEAD",
+      "purpose": "Movement packets carry the B&S position and grounded flag (server fall damage stays correct)",
+      "file": "fabric/src/main/java/gg/craftblade/mixin/ClientPlayerMixin.java",
+      "verified": false
+    },
+    {
+      "id": "mc.arms.render",
+      "game": "minecraft-java",
+      "side": "client",
+      "api": "Mixin BipedEntityModel.setAngles TAIL (PlayerEntity)",
+      "purpose": "Everyone sees the VR player's arms where their hands are",
+      "file": "fabric/src/main/java/gg/craftblade/mixin/BipedModelMixin.java",
+      "verified": false
+    },
+    {
+      "id": "mc.melty",
+      "game": "minecraft-java",
+      "side": "client",
+      "api": "config/craftblade/melty.properties join= ; TitleScreen init -> ConnectScreen.connect or IntegratedServerLoader.start ; IntegratedServer.openToLan ; e4mc chat line",
+      "purpose": "Melty hosting and joining: host loads the world and opens it, joiner connects to the address",
+      "file": "fabric/src/main/java/gg/craftblade/client/MeltyLink.java",
+      "verified": false
+    },
+    {
+      "id": "bas.entry",
+      "game": "blade-and-sorcery",
+      "side": "client",
+      "api": "ThunderRoad.ThunderScript.ScriptLoaded/ScriptUpdate (loaded from Mods/CraftBlade by the game itself)",
+      "purpose": "Start and pump the B&S side",
+      "file": "bas/src/CraftBladeScript.cs",
+      "verified": false
+    },
+    {
+      "id": "bas.bridge",
+      "game": "blade-and-sorcery",
+      "side": "client",
+      "api": "System.Net.Sockets.TcpClient 127.0.0.1:bridgePort",
+      "purpose": "Talk to the player's Minecraft client",
+      "file": "bas/src/BridgeClient.cs",
+      "verified": false
+    },
+    {
+      "id": "bas.blocks",
+      "game": "blade-and-sorcery",
+      "side": "client",
+      "api": "UnityEngine.Mesh + MeshCollider + Texture2D atlas + Shader.Find(URP Lit)",
+      "purpose": "Build the Minecraft world around the VR player with real colliders",
+      "file": "bas/src/BlockWorld.cs",
+      "verified": false
+    },
+    {
+      "id": "bas.mesher",
+      "game": "blade-and-sorcery",
+      "side": "client",
+      "api": "pure C# (no game API)",
+      "purpose": "Section -> faces with culling, cross and liquid shapes",
+      "file": "bas/src/Mesher.cs",
+      "verified": false
+    },
+    {
+      "id": "bas.player",
+      "game": "blade-and-sorcery",
+      "side": "client",
+      "api": "Player.local.Teleport + Player.local.head/handLeft/handRight transforms + Player.local.locomotion.isGrounded + creature.currentHealth/maxHealth/Kill/Resurrect",
+      "purpose": "Place the player in the block world, send their pose, mirror Minecraft health",
+      "file": "bas/src/PlayerLink.cs",
+      "verified": false
+    },
+    {
+      "id": "bas.creatures",
+      "game": "blade-and-sorcery",
+      "side": "client",
+      "api": "Catalog.GetData<CreatureData>(id).SpawnAsync + creature.brain.Stop + creature.Teleport + creature.Kill + creature.Despawn",
+      "purpose": "Minecraft humanoids and players become real B&S creatures",
+      "file": "bas/src/EntityProxies.cs",
+      "verified": false
+    },
+    {
+      "id": "bas.hits",
+      "game": "blade-and-sorcery",
+      "side": "client",
+      "api": "EventManager.onCreatureHit(Creature, CollisionInstance, EventTime) + CollisionInstance.damageStruct.damage/damageType + impactVelocity",
+      "purpose": "Physical B&S hits on creature proxies become Minecraft damage",
+      "file": "bas/src/EntityProxies.cs",
+      "verified": false
+    },
+    {
+      "id": "bas.boxhits",
+      "game": "blade-and-sorcery",
+      "side": "client",
+      "api": "MonoBehaviour.OnCollisionEnter on a kinematic box + Collision.relativeVelocity + Item in parent",
+      "purpose": "Physical hits on non-humanoid proxies",
+      "file": "bas/src/ProxyBox.cs",
+      "verified": false
+    }
+  ]
+}
