@@ -84,9 +84,11 @@ def main():
     mc_zip = dist / f"CraftBlade-Minecraft-{VERSION}.zip"
     inst = "Prism/instances/CraftBlade"
     with zipfile.ZipFile(mc_zip, "w", zipfile.ZIP_DEFLATED) as z:
+        names = [i.filename for i in prism.infolist() if not i.is_dir()]
+        top = names[0].split("/")[0] + "/" if names and all(n.startswith(names[0].split("/")[0] + "/") for n in names) else ""
         for info in prism.infolist():
             if not info.is_dir():
-                z.writestr("Prism/" + info.filename, prism.read(info))
+                z.writestr("Prism/" + info.filename[len(top):], prism.read(info))  # prismlauncher.exe must sit at Prism/
         z.writestr("Prism/portable.txt", "")
         z.writestr(f"{inst}/instance.cfg", "InstanceType=OneSix\nname=CraftBlade\niconKey=default\n")
         z.writestr(f"{inst}/mmc-pack.json", json.dumps({"formatVersion": 1, "components": [
