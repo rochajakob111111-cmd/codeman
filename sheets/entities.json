@@ -1,0 +1,24 @@
+{
+  "_sheet": "entities",
+  "_about": "How a Minecraft living entity appears in Blade & Sorcery. 'creature' = a real B&S creature from the player's own B&S catalog with its brain stopped, driven by Minecraft positions, ragdolled on death. 'box' = an invisible-mesh collider sized from the Minecraft hitbox with a coloured outline (non-humanoids). Rows are matched top to bottom; '*' is the fallback.",
+  "columns": ["mcType", "representation", "basCreature", "verified"],
+  "rows": [
+    {"mcType": "minecraft:player", "representation": "creature", "basCreature": "HumanMale", "verified": false},
+    {"mcType": "minecraft:zombie", "representation": "creature", "basCreature": "HumanMale", "verified": false},
+    {"mcType": "minecraft:husk", "representation": "creature", "basCreature": "HumanMale", "verified": false},
+    {"mcType": "minecraft:drowned", "representation": "creature", "basCreature": "HumanMale", "verified": false},
+    {"mcType": "minecraft:zombie_villager", "representation": "creature", "basCreature": "HumanMale", "verified": false},
+    {"mcType": "minecraft:skeleton", "representation": "creature", "basCreature": "HumanMale", "verified": false},
+    {"mcType": "minecraft:stray", "representation": "creature", "basCreature": "HumanMale", "verified": false},
+    {"mcType": "minecraft:wither_skeleton", "representation": "creature", "basCreature": "HumanMale", "verified": false},
+    {"mcType": "minecraft:pillager", "representation": "creature", "basCreature": "HumanMale", "verified": false},
+    {"mcType": "minecraft:vindicator", "representation": "creature", "basCreature": "HumanMale", "verified": false},
+    {"mcType": "minecraft:evoker", "representation": "creature", "basCreature": "HumanMale", "verified": false},
+    {"mcType": "minecraft:witch", "representation": "creature", "basCreature": "HumanFemale", "verified": false},
+    {"mcType": "minecraft:villager", "representation": "creature", "basCreature": "HumanMale", "verified": false},
+    {"mcType": "minecraft:piglin", "representation": "creature", "basCreature": "HumanMale", "verified": false},
+    {"mcType": "minecraft:piglin_brute", "representation": "creature", "basCreature": "HumanMale", "verified": false},
+    {"mcType": "minecraft:zombified_piglin", "representation": "creature", "basCreature": "HumanMale", "verified": false},
+    {"mcType": "*", "representation": "box", "basCreature": "-", "verified": false}
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "mode": "installed",
+  "games": [
+    {"role": "primary", "slug": "minecraft-java"},
+    {"role": "companion", "slug": "blade-and-sorcery"}
+  ],
+  "components": [
+    {"id": "main", "kind": "main", "label": "CraftBlade's Minecraft", "fileName": "CraftBlade-Minecraft-0.1.0.zip", "required": true},
+    {"id": "bas", "kind": "extra", "label": "CraftBlade for Blade & Sorcery", "fileName": "CraftBlade-BAS-0.1.0.zip", "required": true}
+  ],
+  "requirements": [],
+  "mappings": [
+    {"component": "main", "from": "", "to": "{localappdata}/CraftBlade"},
+    {"component": "bas", "from": "CraftBlade/", "to": "{game:blade-and-sorcery}/BladeAndSorcery_Data/StreamingAssets/Mods/CraftBlade"}
+  ],
+  "setup": {
+    "label": "Minecraft",
+    "launch": {"kind": "exe", "path": "{localappdata}/CraftBlade/Prism/prismlauncher.exe", "args": ["--launch", "CraftBlade"]},
+    "done": {"file": "{localappdata}/CraftBlade/Prism/instances/CraftBlade/.minecraft/logs/latest.log", "contains": "Backend library:"}
+  },
+  "launch": {"kind": "exe", "path": "{localappdata}/CraftBlade/Prism/prismlauncher.exe", "args": ["--launch", "CraftBlade"]},
+  "together": [
+    {"launch": {"kind": "exe", "path": "{game:blade-and-sorcery}/BladeAndSorcery.exe", "cwd": "{game:blade-and-sorcery}"}, "waitSeconds": 20}
+  ],
+  "runtimeData": ["{localappdata}/CraftBlade"],
+  "multiplayer": {
+    "maxPlayers": 8,
+    "connect": {
+      "hostEnv": {"CRAFTBLADE_LAN_PORT": "{port}"},
+      "address": {"log": "{localappdata}/CraftBlade/Prism/instances/CraftBlade/.minecraft/logs/latest.log", "after": "Domain assigned: "},
+      "joinFile": {"path": "{localappdata}/CraftBlade/Prism/instances/CraftBlade/.minecraft/config/craftblade/melty.properties", "key": "join"}
+    }
+  }
+}

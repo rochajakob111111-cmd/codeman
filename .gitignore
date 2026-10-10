@@ -1,0 +1,8 @@
+dist/
+fabric/build/
+fabric/.gradle/
+fabric/run/
+bas/bin/
+bas/obj/
+__pycache__/
+*.pyc

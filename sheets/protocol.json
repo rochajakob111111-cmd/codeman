@@ -1,0 +1,236 @@
+{
+  "_sheet": "protocol",
+  "_about": "Localhost bridge between the VR player's own Minecraft client (Fabric mod) and their Blade & Sorcery (script mod). One row = one message. Frame: u32 length (big-endian) | u8 id | fields in order, big-endian. Units: Minecraft blocks = metres, Minecraft axes (+Z south, yaw 0 = +Z).",
+  "_types": [
+    "u8",
+    "i32",
+    "f32",
+    "f64",
+    "str",
+    "bytes"
+  ],
+  "columns": [
+    "name",
+    "id",
+    "direction",
+    "fields",
+    "rate",
+    "purpose"
+  ],
+  "rows": [
+    {
+      "name": "Hello",
+      "id": 1,
+      "direction": "bas>mc",
+      "fields": [
+        "protocol:i32",
+        "basVersion:str"
+      ],
+      "rate": "once on connect",
+      "purpose": "B&S mod announces itself and its protocol version"
+    },
+    {
+      "name": "Welcome",
+      "id": 2,
+      "direction": "mc>bas",
+      "fields": [
+        "protocol:i32",
+        "mcVersion:str",
+        "playerName:str",
+        "originX:i32",
+        "originY:i32",
+        "originZ:i32"
+      ],
+      "rate": "once after Hello",
+      "purpose": "Minecraft accepts; origin = block the B&S world anchor maps to"
+    },
+    {
+      "name": "StateDef",
+      "id": 3,
+      "direction": "mc>bas",
+      "fields": [
+        "stateId:i32",
+        "name:str",
+        "shape:u8",
+        "opaque:u8",
+        "tint:u8",
+        "collide:u8",
+        "texDown:str",
+        "texUp:str",
+        "texNorth:str",
+        "texSouth:str",
+        "texWest:str",
+        "texEast:str",
+        "minX:f32",
+        "minY:f32",
+        "minZ:f32",
+        "maxX:f32",
+        "maxY:f32",
+        "maxZ:f32"
+      ],
+      "rate": "once per block state, before the first Section using it",
+      "purpose": "How to draw and collide one block state (shape ids in sheets/shapes.json); a texture name ending in #tint is coloured by the section's grass/foliage/water colour per the tint byte (1 grass, 2 foliage, 3 water)"
+    },
+    {
+      "name": "Texture",
+      "id": 4,
+      "direction": "mc>bas",
+      "fields": [
+        "name:str",
+        "png:bytes"
+      ],
+      "rate": "on request",
+      "purpose": "PNG bytes of one block texture, read from the player's own Minecraft resources"
+    },
+    {
+      "name": "TextureRequest",
+      "id": 5,
+      "direction": "bas>mc",
+      "fields": [
+        "name:str"
+      ],
+      "rate": "once per texture",
+      "purpose": "B&S asks for a texture it has not cached this session"
+    },
+    {
+      "name": "Section",
+      "id": 6,
+      "direction": "mc>bas",
+      "fields": [
+        "sx:i32",
+        "sy:i32",
+        "sz:i32",
+        "grass:i32",
+        "foliage:i32",
+        "water:i32",
+        "states:bytes"
+      ],
+      "rate": "nearest first, max sectionsPerTick",
+      "purpose": "16x16x16 blocks; states = 4096 big-endian u16 local palette indices, index order y*256+z*16+x, preceded by palette (u16 count, then i32 stateIds)"
+    },
+    {
+      "name": "SectionClear",
+      "id": 7,
+      "direction": "mc>bas",
+      "fields": [
+        "sx:i32",
+        "sy:i32",
+        "sz:i32"
+      ],
+      "rate": "when a section leaves the radius",
+      "purpose": "Drop the mesh and colliders of one section"
+    },
+    {
+      "name": "BlockUpdate",
+      "id": 8,
+      "direction": "mc>bas",
+      "fields": [
+        "x:i32",
+        "y:i32",
+        "z:i32",
+        "stateId:i32"
+      ],
+      "rate": "on change",
+      "purpose": "One block changed (placed, broken, exploded)"
+    },
+    {
+      "name": "EntityState",
+      "id": 9,
+      "direction": "mc>bas",
+      "fields": [
+        "entityId:i32",
+        "kind:str",
+        "name:str",
+        "x:f64",
+        "y:f64",
+        "z:f64",
+        "yaw:f32",
+        "pitch:f32",
+        "width:f32",
+        "height:f32",
+        "health:f32",
+        "maxHealth:f32",
+        "flags:u8"
+      ],
+      "rate": "20 Hz per living entity within entityRadius",
+      "purpose": "A Minecraft mob or player near the VR player; flags 1=alive 2=player 4=hurt this tick 8=attacking"
+    },
+    {
+      "name": "EntityRemove",
+      "id": 10,
+      "direction": "mc>bas",
+      "fields": [
+        "entityId:i32"
+      ],
+      "rate": "on despawn or out of range",
+      "purpose": "Remove the proxy"
+    },
+    {
+      "name": "SelfState",
+      "id": 11,
+      "direction": "mc>bas",
+      "fields": [
+        "x:f64",
+        "y:f64",
+        "z:f64",
+        "health:f32",
+        "maxHealth:f32",
+        "dead:u8",
+        "teleportSeq:i32"
+      ],
+      "rate": "20 Hz",
+      "purpose": "The VR player's own Minecraft body: authoritative health; teleportSeq rises when the server moves the player (respawn, /tp, correction) and B&S must move there"
+    },
+    {
+      "name": "Hurt",
+      "id": 12,
+      "direction": "mc>bas",
+      "fields": [
+        "amount:f32",
+        "fromX:f64",
+        "fromY:f64",
+        "fromZ:f64"
+      ],
+      "rate": "on damage",
+      "purpose": "The VR player's Minecraft body took damage; B&S plays the hit"
+    },
+    {
+      "name": "Pose",
+      "id": 13,
+      "direction": "bas>mc",
+      "fields": [
+        "x:f64",
+        "y:f64",
+        "z:f64",
+        "yaw:f32",
+        "pitch:f32",
+        "grounded:u8",
+        "lhX:f32",
+        "lhY:f32",
+        "lhZ:f32",
+        "rhX:f32",
+        "rhY:f32",
+        "rhZ:f32",
+        "teleportSeq:i32"
+      ],
+      "rate": "every Minecraft tick (20 Hz)",
+      "purpose": "Feet position, head yaw/pitch, grounded, hand offsets from the feet in the body frame (x right, y up, z forward); teleportSeq = last SelfState.teleportSeq B&S has applied (Minecraft ignores older poses)"
+    },
+    {
+      "name": "Hit",
+      "id": 14,
+      "direction": "bas>mc",
+      "fields": [
+        "entityId:i32",
+        "damage:f32",
+        "dmgType:u8",
+        "vx:f32",
+        "vy:f32",
+        "vz:f32",
+        "thrown:u8"
+      ],
+      "rate": "on hit, after damageCooldownMs per entity",
+      "purpose": "A B&S weapon or fist hit a proxy; dmgType ids in sheets/damage.json; v = weapon velocity in Minecraft axes"
+    }
+  ]
+}

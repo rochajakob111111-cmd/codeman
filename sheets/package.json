@@ -1,0 +1,60 @@
+{
+  "_sheet": "package",
+  "_about": "Everything that goes into a release. Game files never do: Minecraft is the player's own (Prism signs them in), Blade & Sorcery is the player's own install, and the B&S mod reads only what their Minecraft client sends.",
+  "columns": [
+    "id",
+    "what",
+    "source",
+    "license",
+    "credit",
+    "destination",
+    "verified"
+  ],
+  "rows": [
+    {
+      "id": "craftblade-fabric",
+      "what": "CraftBlade Fabric mod jar (this repo, fabric/)",
+      "source": "gradle build in fabric/",
+      "license": "MIT",
+      "credit": "rochajakob111111-cmd",
+      "destination": "{localappdata}/CraftBlade/Prism/instances/CraftBlade/.minecraft/mods/craftblade-*.jar",
+      "verified": false
+    },
+    {
+      "id": "fabric-api",
+      "what": "Fabric API 0.107.0+1.21.1",
+      "source": "https://github.com/FabricMC/fabric/releases (or Modrinth project P7dR8mSH)",
+      "license": "Apache-2.0",
+      "credit": "FabricMC",
+      "destination": "{localappdata}/CraftBlade/Prism/instances/CraftBlade/.minecraft/mods/fabric-api-*.jar",
+      "verified": false
+    },
+    {
+      "id": "e4mc",
+      "what": "e4mc (public address for an opened world, so friends behind routers can join)",
+      "source": "https://modrinth.com/mod/e4mc (Fabric build for 1.21.1)",
+      "license": "MIT",
+      "credit": "vgskye / e4mc",
+      "destination": "{localappdata}/CraftBlade/Prism/instances/CraftBlade/.minecraft/mods/e4mc-*.jar",
+      "verified": false
+    },
+    {
+      "id": "prism",
+      "what": "Prism Launcher portable (Windows) with instance CraftBlade: Minecraft 1.21.1 + Fabric Loader 0.16.10 in mmc-pack.json",
+      "source": "https://github.com/PrismLauncher/PrismLauncher/releases (Windows portable zip)",
+      "license": "GPL-3.0",
+      "credit": "Prism Launcher contributors",
+      "destination": "{localappdata}/CraftBlade/Prism",
+      "verified": false
+    },
+    {
+      "id": "craftblade-bas",
+      "what": "CraftBlade B&S script mod: manifest.json, CraftBlade.dll, craftblade.json (this repo, bas/)",
+      "source": "dotnet build bas/CraftBlade.csproj against the player's own B&S",
+      "license": "MIT",
+      "credit": "rochajakob111111-cmd",
+      "destination": "{game:blade-and-sorcery}/BladeAndSorcery_Data/StreamingAssets/Mods/CraftBlade",
+      "verified": false
+    }
+  ]
+}

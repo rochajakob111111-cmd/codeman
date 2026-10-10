@@ -1,0 +1,17 @@
+{
+  "_sheet": "config",
+  "_about": "Settings. side = which mod reads it. Minecraft: config/craftblade.properties. B&S: Mods/CraftBlade/craftblade.json (generated defaults).",
+  "columns": ["key", "side", "type", "default", "purpose"],
+  "rows": [
+    {"key": "bridgePort", "side": "both", "type": "int", "default": "25599", "purpose": "127.0.0.1 TCP port the Minecraft client listens on for B&S"},
+    {"key": "viewRadius", "side": "mc", "type": "int", "default": "3", "purpose": "Sections around the VR player sent to B&S (3 = 48 blocks)"},
+    {"key": "sectionsPerTick", "side": "mc", "type": "int", "default": "6", "purpose": "Budget of Section messages per Minecraft tick"},
+    {"key": "entityRadius", "side": "mc", "type": "double", "default": "40.0", "purpose": "Living entities within this many blocks become B&S proxies"},
+    {"key": "maxHitReach", "side": "mc", "type": "double", "default": "6.0", "purpose": "Server rejects melee Hit beyond this distance"},
+    {"key": "maxThrowReach", "side": "mc", "type": "double", "default": "48.0", "purpose": "Server rejects thrown Hit beyond this distance"},
+    {"key": "damageCooldownMs", "side": "both", "type": "int", "default": "250", "purpose": "Minimum time between two hits on the same entity"},
+    {"key": "anchorY", "side": "bas", "type": "float", "default": "600", "purpose": "Unity height of the Minecraft origin block, above any B&S level geometry"},
+    {"key": "maxCreatureProxies", "side": "bas", "type": "int", "default": "12", "purpose": "B&S creatures alive at once; further humanoids fall back to boxes"},
+    {"key": "proxyHealth", "side": "bas", "type": "float", "default": "100000", "purpose": "Local B&S health of a proxy so only Minecraft decides deaths"}
+  ]
+}
